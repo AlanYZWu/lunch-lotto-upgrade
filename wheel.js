@@ -77,131 +77,91 @@ function drawWheel() {
     );
     ctx.lineTo(canvas.width / 2, canvas.height / 2);
     ctx.fill();
+  
+    // Add a border (with shadow)
+    ctx.lineWidth = 15; // Border thickness
+    ctx.strokeStyle = "#ffffff"; // Border color
+    ctx.stroke();
+    ctx.restore(); // Restore the context state to remove shadow effects for subsequent drawings
+  }  
+  
+  function rotateWheel() {
+    spinTime += 30;
+    if (spinTime >= spinTimeTotal) {
+      clearTimeout(spinTimeout);
+  
+      // Calculate the winning segment based on the final angle
+      const degrees = (startAngle * 180) / Math.PI + 90;
+      const normalizedDegrees = degrees % 360;
+      const selectedIndex = Math.floor(normalizedDegrees / (360 / options.length));
+      const selectedOption = options[options.length - 1 - selectedIndex];
+      
+      // Save to history
+      const historyItem = {
+        name: selectedOption.name,
+        timestamp: new Date().toLocaleDateString()
+      };
+      
+      chrome.storage.sync.get({ history: [] }, (data) => {
+        const history = data.history;
+        history.unshift(historyItem); // Add new item to the beginning
+        // Keep only the last 50 items
+        if (history.length > 50) {
+          history.pop();
+        }
+        chrome.storage.sync.set({ history }, () => {
+          // Update history display
+          displayHistory();
+        });
+      });
+        
+      // Motivational messages to encourage the user
+      const messages = [
+        "Time to fuel your body with something nutritious! 🍎",
+        "Great choice! Enjoy your healthy meal. 🌱",
+        "A healthy lunch keeps the energy flowing! 💪",
+        "Your body will thank you for this meal. 🥗",
+        "Eating healthy today sets you up for success! 🏆",
+        "Tasty and healthy? You've got it! 🍽️",
+        "Healthy food, happy mood! 😊",
+      ];
+  
+      // Select a random motivational message
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+  
+      // Show result + motivational message
+      swal({
+        title: `Selected Option: ${selectedOption.name}`,
+        content: (() => {
+          const content = document.createElement("div");
+          const paragraph = document.createElement("p");
+          const link = document.createElement("a");
+          
+          paragraph.style.fontSize = "12px";
+          paragraph.textContent = randomMessage; // Add the motivational message
+      
+          link.href = selectedOption.googleMapsLink; // Set the Google Maps link
+          link.target = "_blank"; // Open the link in a new tab
+          link.textContent = "View on Google Maps"; // Text for the link
+          link.style.color = "#a2a2a2"; // Optional: Add a color to the link
+          link.style.fontSize = "10px";
+      
+          content.appendChild(paragraph);
+          content.appendChild(link);
+      
+          return content;
+        })(),
+        icon: "success",
+        button: false, // Hide the default OK button
+      });
+      
+      return;
+    }
+  
+    startAngle += (spinAngleStart * Math.PI) / 180;
+    drawWheel();
+    spinTimeout = setTimeout(rotateWheel, 30);
 
-    // Determine font color based on segment color
-    const fontColor = isColorDark(colors[i % colors.length]) ? "white" : "black";
-
-    // Draw the text
-    ctx.save();
-    ctx.fillStyle = fontColor; // Set dynamic font color
-    ctx.translate(
-      canvas.width / 2 + Math.cos(angle + arc / 2) * (canvas.width / 2 - 120),
-      canvas.height / 2 + Math.sin(angle + arc / 2) * (canvas.height / 2 - 120)
-    );
-    ctx.rotate(angle + arc / 2);
-    ctx.fillText(truncatedOption, -ctx.measureText(truncatedOption).width / 2, 0); // Use truncated option
-    ctx.restore();
-  });
-
-  // Draw the pointer and center circle
-  drawPointer();
-  drawCenterCircle();
-}
-
-function drawCenterCircle() {
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-
-  // Set shadow properties
-  ctx.save();
-  ctx.shadowBlur = 15; // Shadow blur amount
-  ctx.shadowColor = "rgba(0, 0, 0, 0.25)"; // Shadow color
-
-  // Draw the shadowed circle
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, 50, 0, 2 * Math.PI); // Adjust radius as needed
-  ctx.fillStyle = "white"; // Center circle color
-  ctx.fill();
-  ctx.restore();
-
-  // Add a border to the center circle (optional)
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, 50, 0, 2 * Math.PI);
-  ctx.lineWidth = 5; // Border width
-  ctx.strokeStyle = "#fff"; // Border color
-  ctx.stroke();
-}
-
-function drawPointer() {
-  const centerX = canvas.width / 2; // Center of the canvas
-
-  // Set shadow properties for the pointer
-  ctx.save(); // Save the current context state
-  ctx.shadowBlur = 15; // Blur amount for the shadow
-  ctx.shadowColor = "rgba(0, 0, 0, 0.25)"; // Shadow color (semi-transparent black)
-  ctx.shadowOffsetX = 0; // Horizontal shadow offset
-  ctx.shadowOffsetY = 5; // Vertical shadow offset
-
-  // Draw the pointer
-  ctx.beginPath();
-  ctx.moveTo(centerX - 30, 0); // Left corner of the pointer
-  ctx.lineTo(centerX + 30, 0); // Right corner of the pointer
-  ctx.lineTo(centerX, 80); // Bottom tip of the pointer
-  ctx.closePath();
-
-  // Fill the pointer
-  ctx.fillStyle = "#007BFF"; // Pointer color
-  ctx.fill();
-
-  // Add a border (with shadow)
-  ctx.lineWidth = 15; // Border thickness
-  ctx.strokeStyle = "#ffffff"; // Border color
-  ctx.stroke();
-  ctx.restore(); // Restore the context state to remove shadow effects for subsequent drawings
-}
-
-function rotateWheel() {
-  spinTime += 30;
-  if (spinTime >= spinTimeTotal) {
-    clearTimeout(spinTimeout);
-
-    // Calculate the winning segment based on the final angle
-    const degrees = (startAngle * 180) / Math.PI + 90;
-    const normalizedDegrees = degrees % 360;
-    const selectedIndex = Math.floor(normalizedDegrees / (360 / options.length));
-    const selectedOption = options[options.length - 1 - selectedIndex];
-
-    // Motivational messages to encourage the user
-    const messages = [
-      "Time to fuel your body with something nutritious! 🍎",
-      "Great choice! Enjoy your healthy meal. 🌱",
-      "A healthy lunch keeps the energy flowing! 💪",
-      "Your body will thank you for this meal. 🥗",
-      "Eating healthy today sets you up for success! 🏆",
-      "Tasty and healthy? You've got it! 🍽️",
-      "Healthy food, happy mood! 😊",
-    ];
-
-    // Select a random motivational message
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-    // Show result + motivational message
-    // Show result + link to Foursquare
-    swal({
-      title: `Selected Option: ${selectedOption.name}`,
-      content: (() => {
-        const container = document.createElement("div");
-        const msg = document.createElement("p");
-        msg.style.fontSize = "12px";
-        msg.textContent = randomMessage;
-
-        const link = document.createElement("a");
-        link.href = selectedOption.link;           // ← your Foursquare URL
-        link.target = "_blank";
-        link.textContent = "View on Foursquare";   // ← updated text
-        link.style.color = "#a2a2a2";
-        link.style.fontSize = "10px";
-
-        container.appendChild(msg);
-        container.appendChild(link);
-        return container;
-      })(),
-      icon: "success",
-      button: false,
-    });
-
-
-    return;
   }
 
   startAngle += (spinAngleStart * Math.PI) / 180;
@@ -227,3 +187,50 @@ function spin() {
 document.getElementById("spin").addEventListener("click", () => spin());
 scaleCanvas(canvas, ctx);
 drawWheel();
+
+// Add function to display history
+function displayHistory() {
+  const historyList = document.getElementById('history-list');
+  chrome.storage.sync.get({ history: [] }, (data) => {
+    const history = data.history;
+    historyList.innerHTML = ''; // Clear current history
+    
+    history.forEach(item => {
+      const historyItem = document.createElement('div');
+      historyItem.className = 'history-item';
+      
+      const restaurantName = document.createElement('span');
+      restaurantName.className = 'restaurant-name';
+      restaurantName.textContent = item.name;
+      
+      const timestamp = document.createElement('span');
+      timestamp.className = 'timestamp';
+      timestamp.textContent = item.timestamp;
+      
+      historyItem.appendChild(restaurantName);
+      historyItem.appendChild(timestamp);
+      historyList.appendChild(historyItem);
+    });
+  });
+}
+
+// Add function to clear history
+function clearHistory() {
+  chrome.storage.sync.set({ history: [] }, () => {
+    displayHistory(); // Refresh the display
+    // Show a brief success message
+    swal({
+      title: "History Cleared!",
+      icon: "success",
+      button: false,
+      timer: 1500
+    });
+  });
+}
+
+// Call displayHistory when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  displayHistory();
+  // Add clear history button listener
+  document.getElementById('clear-history').addEventListener('click', clearHistory);
+});

@@ -1,9 +1,9 @@
-
 const apiKey = "fsq3hxJtVlvwGDVrEbkXz5o0PgRyxe+03woQ9thciadp+SI=";
 const defaultSettings = {
   distance: 0.5,       // Default search radius in miles
   price: "2,3",        // Google Places API uses 1-4 ($ - $$$$)
   dietary: "",         // Empty means no filter (future: vegetarian, gluten-free, etc.)
+  history: []         // Array to store restaurant selection history
 };
 // Convert miles to meters (Google Maps API uses meters)
 function milesToMeters(miles) {

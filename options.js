@@ -26,5 +26,3 @@ document.getElementById("save").addEventListener("click", async () => {
 document.getElementById("settings").addEventListener("click", () => {
   chrome.runtime.openOptionsPage();
 });
-
-  
