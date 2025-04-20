@@ -8,9 +8,7 @@ This assignment involves enhancing a Chrome extension developed by one of the To
 ## Project Description
 Lunch Lotto is a Chrome extension that helps users decide where to eat by randomly selecting nearby restaurants. Your task is to enhance this extension by implementing new features.
 
-## Enhancements
-Choose one of the following enhancements to implement:
-
+## Enhancements Added
 1. **History Feature**: Maintain a log of all restaurants chosen by the user (Implemented by Alan)
 2. **Alternative API Integration**: Replace Google Maps API with another restaurant data provider (Implemented by Abdullah)
 3. **Progress Indicator**: Add a progress bar to indicate the status of API calls (Implemented by Abdullah)
