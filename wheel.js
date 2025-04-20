@@ -159,6 +159,25 @@ function truncateOption(option) {
       const normalizedDegrees = degrees % 360;
       const selectedIndex = Math.floor(normalizedDegrees / (360 / options.length));
       const selectedOption = options[options.length - 1 - selectedIndex];
+      
+      // Save to history
+      const historyItem = {
+        name: selectedOption.name,
+        timestamp: new Date().toLocaleDateString()
+      };
+      
+      chrome.storage.sync.get({ history: [] }, (data) => {
+        const history = data.history;
+        history.unshift(historyItem); // Add new item to the beginning
+        // Keep only the last 50 items
+        if (history.length > 50) {
+          history.pop();
+        }
+        chrome.storage.sync.set({ history }, () => {
+          // Update history display
+          displayHistory();
+        });
+      });
         
       // Motivational messages to encourage the user
       const messages = [
@@ -226,3 +245,50 @@ function spin() {
 document.getElementById("spin").addEventListener("click", () => spin());
 scaleCanvas(canvas, ctx);
 drawWheel();
+
+// Add function to display history
+function displayHistory() {
+  const historyList = document.getElementById('history-list');
+  chrome.storage.sync.get({ history: [] }, (data) => {
+    const history = data.history;
+    historyList.innerHTML = ''; // Clear current history
+    
+    history.forEach(item => {
+      const historyItem = document.createElement('div');
+      historyItem.className = 'history-item';
+      
+      const restaurantName = document.createElement('span');
+      restaurantName.className = 'restaurant-name';
+      restaurantName.textContent = item.name;
+      
+      const timestamp = document.createElement('span');
+      timestamp.className = 'timestamp';
+      timestamp.textContent = item.timestamp;
+      
+      historyItem.appendChild(restaurantName);
+      historyItem.appendChild(timestamp);
+      historyList.appendChild(historyItem);
+    });
+  });
+}
+
+// Add function to clear history
+function clearHistory() {
+  chrome.storage.sync.set({ history: [] }, () => {
+    displayHistory(); // Refresh the display
+    // Show a brief success message
+    swal({
+      title: "History Cleared!",
+      icon: "success",
+      button: false,
+      timer: 1500
+    });
+  });
+}
+
+// Call displayHistory when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  displayHistory();
+  // Add clear history button listener
+  document.getElementById('clear-history').addEventListener('click', clearHistory);
+});

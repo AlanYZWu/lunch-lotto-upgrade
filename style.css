@@ -148,17 +148,15 @@ background-color:rgb(61, 69, 119);
 
 /* 🔄 Loading GIF: Centered Inside the Wheel */
 #loading-gif {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 310px;  /* ✅ Adjust size */
-  height: 310px;
-  max-width: 500px;  /* ✅ Prevents it from getting too large */
-  max-height: 500px;
-  transform: translate(-50%, -50%);  /* ✅ Centers it */
-  z-index: 3;  /* ✅ Ensures it's above the wheel */
-  display: none; /* ✅ Hide initially */
-  pointer-events: none; /* ✅ Prevent interaction */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 1000;
+  display: none;
+  pointer-events: none;
 }
 
 .swal-modal {
@@ -174,4 +172,85 @@ background-color:rgb(61, 69, 119);
 
 .swal-title {
   font-size: 18px !important; /* Customize the title text size */
+}
+
+#popup-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+#main-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+#history-section {
+    width: 100%;
+    margin-top: 2px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+#history-section h3 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+#history-list {
+    max-height: 200px;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.history-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-item .restaurant-name {
+    font-weight: 500;
+}
+
+.history-item .timestamp {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.history-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#clear-history {
+    font-size: 0.8em;
+    padding: 5px 10px;
+    margin: 0;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+#clear-history:hover {
+    background-color: #c82333;
 }
