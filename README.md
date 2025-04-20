@@ -1,4 +1,4 @@
-# CIS 3500: Lunch Lotto Starter
+# CIS 3500: Lunch Lotto Upgrade
 
 ## Overview
 This assignment involves enhancing a Chrome extension developed by one of the Top 3 winners of the MCIT hackathon. The project provides hands-on experience in web development, API integration, and collaborative coding.
@@ -8,13 +8,13 @@ This assignment involves enhancing a Chrome extension developed by one of the To
 ## Project Description
 Lunch Lotto is a Chrome extension that helps users decide where to eat by randomly selecting nearby restaurants. Your task is to enhance this extension by implementing new features.
 
-## Enhancement Options
+## Enhancements
 Choose one of the following enhancements to implement:
 
-1. **History Feature**: Maintain a log of all restaurants chosen by the user.
-2. **Alternative API Integration**: Replace Google Maps API with another restaurant data provider.
-3. **Progress Indicator**: Add a progress bar to indicate the status of API calls.
-4. **Custom Feature**: Propose a unique feature (requires instructor/TA approval).
+1. **History Feature**: Maintain a log of all restaurants chosen by the user (Implemented by Alan)
+2. **Alternative API Integration**: Replace Google Maps API with another restaurant data provider (Implemented by Abdullah)
+3. **Progress Indicator**: Add a progress bar to indicate the status of API calls (Implemented by Abdullah)
+4. **Restaurant Filtering**: When fetching restaurants, filter out restaurants that are closed (Implemented by Alan)
 
 ## Getting Started
 
@@ -57,7 +57,7 @@ git pull
 - Submit the final version of your project as per website guidelines.
 - Include a brief write-up of your implemented features and any challenges faced.
 
-## Setup Google Maps API Key
+## Setup Foursquare API Key
 
 ### Replace the Google Maps API Key:
 
@@ -66,18 +66,10 @@ git pull
    ```js
    const apiKey = "YOUR_API_KEY";
    ```
-3. Replace "YOUR_API_KEY" with your own Google Maps API Key.
+3. Replace "YOUR_API_KEY" with your own Foursquare API Key.
    Example:
    ```js
    const apiKey = "AIzaSy12345EXAMPLE";
    ```
-
-### If you don't have a Google Maps API Key yet:
-
-1. Go to the Google Cloud Console.
-2. Create or select a project.
-3. Navigate to APIs & Services > Credentials and click Create Credentials.
-4. Select API Key, copy the generated key, and replace the placeholder in popup.js.
-
 ---
 Happy coding, and good luck with Lunch Lotto! 🍀
