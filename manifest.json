@@ -1,16 +1,16 @@
 {
-    "manifest_version": 3,
-    "name": "Lunch Lotto",
-    "version": "1.0",
-    "description": "A fun lunch recommendation tool with healthy options!",
-    "permissions": ["notifications", "storage", "alarms", "geolocation"],
-    "host_permissions": ["https://api.foursquare.com/*"],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": "assets/icon.png"
-    }
+  "manifest_version": 3,
+  "name": "Lunch Lotto",
+  "version": "1.0",
+  "description": "A fun lunch recommendation tool with healthy options!",
+  "permissions": ["notifications", "storage", "alarms", "geolocation"],
+  "host_permissions": ["https://api.foursquare.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/icon.png"
   }
+}
   
