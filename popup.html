@@ -14,10 +14,17 @@
   <div id="caption-box">
     <h2 id="greeting">Time for a healthy meal 🥗!</h2>
   </div>
-  
+
   <div id="popup-container">
     <!-- 🎡 Main View -->
     <div id="main-view">
+      <!-- Progress bar container -->
+      <div id="loading-text" class="loading-text">Loading restaurants…</div>
+      <div id="progress-container" class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+
+      <!--Wheel container-->
       <div id="wheel-container">
         <img id="loading-gif" src="assets/loading.gif" alt="Loading..." style="display: none;">
         <canvas id="wheel" width="310" height="310"></canvas>
