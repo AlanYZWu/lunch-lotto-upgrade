@@ -66,10 +66,13 @@ async function fetchRestaurants() {
       const params = new URLSearchParams({
         ll: `${lat},${lng}`,                    // must be "lat,lng"
         radius: String(radiusMeters),           // integer meters
-        query: settings.keyword || "restaurant",// your search term
+        
+        query: settings.keyword || "restaurant", // your search term
+        
         limit: String(settings.limit || 20),
         min_price: settings.price[0],
-        max_price: settings.price[2]
+        max_price: settings.price[2],
+        open_now: "true"                        // Add this parameter to filter for open places
       });
 
       const url = `https://api.foursquare.com/v3/places/search?${params}`;
@@ -80,7 +83,7 @@ async function fetchRestaurants() {
         method: "GET",
         headers: {
           Accept: "application/json",
-          Authorization: apiKey   // no “Bearer ” prefix for v3
+          Authorization: apiKey   // no "Bearer " prefix for v3
         }
       });
       if (!res.ok) throw new Error(`API error ${res.status}`);
@@ -105,7 +108,6 @@ async function fetchRestaurants() {
           distance: settings.distance.toFixed(1),
           price: place.price ? "$".repeat(place.price) : "Unknown",
           lat, lng,
-          // instead of a Google Maps link…
           fsqLink: `https://foursquare.com/v/${place.fsq_id}`
         };
       });
@@ -139,6 +141,7 @@ async function fetchRestaurants() {
       }, 4500);
 
       // ⏳ Wait 5 seconds before showing the wheel
+      
       setTimeout(() => {
         document.getElementById("loading-gif").style.display = "none"; // ✅ Hide Loading GIF
         document.getElementById("wheel").style.display = "block";      // ✅ Show the wheel
